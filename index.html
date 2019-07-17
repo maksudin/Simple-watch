@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JS + CSS Clock</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div id="draw_window">
+		<img class="clock" id="clock_hour" src="images/clock_hour.png" alt="clock_hour" width="300" height="300">
+		<img class="clock" id="clock_sec" src="images/clock_sec.png" alt="clock_hour" width="300" height="300">
+		<img class="clock" id="clock_min" src="images/clock_min.png" alt="clock_hour" width="300" height="300">
+	</div>
+
+	<script type="text/javascript">
+		var interval = 0;
+		var clock_sec = document.getElementById("clock_sec");
+		var clock_min = document.getElementById("clock_min");
+		var clock_hour = document.getElementById("clock_hour");
+
+		var prev_min;
+		var prev_hour;
+
+		startLoop();
+
+		function startLoop() {
+			if (interval > 0) clearInterval(interval);
+			interval = setInterval("nextArrowsPosition()", 1000);
+		}
+
+		function nextArrowsPosition() {
+			var cur_secs = new Date().getSeconds();
+			var cur_mins = new Date().getMinutes();
+			var cur_hours = new Date().getHours();
+
+			if (cur_secs != 0 || cur_secs != 60) {
+				clock_sec.style.transform = "rotate(" + cur_secs * 6 + "deg)";
+				clock_sec.style.transition = "transform 0.01s";
+			}
+
+			if (cur_mins != prev_min || cur_mins != 0 || cur_mins != 60) {
+
+				clock_min.style.transform = "rotate(" + cur_mins * 6 + "deg)";
+				clock_min.style.transition = "transform 0.01s";
+				prev_min = cur_mins;
+			}
+
+			if (cur_hours != prev_hour || cur_hours != 0 || cur_hours != 60) {
+				clock_hour.style.transform = "rotate(" + cur_hours * (30 + (cur_mins/60)) + "deg)";
+				clock_hour.style.transition = "transform 0.01s";
+				prev_hour = cur_hours;
+			}
+		}
+	</script>
+</body>
+</html>
