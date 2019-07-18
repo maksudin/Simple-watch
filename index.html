@@ -11,7 +11,7 @@
 			<img class="clock" id="clock_hour" src="images/clock_hour.png" alt="clock_hour">
 			<img class="clock" id="clock_sec" src="images/clock_sec.png" alt="clock_hour">
 			<img class="clock" id="clock_min" src="images/clock_min.png" alt="clock_hour">
-			<p>System time</p>
+			<span>System time</span>
 		</div>
 
 		<div id="add_watch">
@@ -34,7 +34,6 @@
 		var prev_hour;
 
 		startLoop();
-
 		function startLoop() {
 			if (interval > 0) clearInterval(interval);
 			interval = setInterval("nextArrowsPosition()", 1000);
@@ -66,27 +65,48 @@
 
 		function addWatch() {
 			var drawWindowWidth = drawWindow.offsetWidth;
-			console.log(drawWindowWidth);
 			draw_window.style.width = drawWindowWidth + 250 +"px";
-			var clockDiv = document.createElement('div');
 			draw_window.style.margin = "-150px 0 0 -" + drawWindow.offsetWidth / 2 + "px";
 
+			var clockDiv = document.createElement('div');
 			clockDiv.className = 'new_Clock';
 			clockDiv.style.float = 'right';
 			clockDiv.style.position = 'relative';
 
 			var clockImg = document.createElement('img');
 			clockImg.className = 'clock';
+			clockImg.addClass = "noselect";
 			clockImg.src = "images/clock_hour.png";
 
-			clockDiv.appendChild(clockImg);
-			drawWindow.appendChild(clockDiv);
-			watches_count++;
+			var form = document.createElement('form');
+			form.className = "timezone_form";
+			form.action = "#";
+			
+			var inputList = document.createElement("input");
+			inputList.name = "timezone";
 
+			var dataList = document.createElement("dataList");
+			dataList.addId = "timezones";
+
+			dataList.innerHTML = "<option value='Finland' />" +
+			"<option value='Moscow' />";
+
+			inputList.setAttribute('list', dataList.id);
+
+			form.appendChild(inputList);
+			form.appendChild(dataList);
+
+			clockDiv.appendChild(clockImg);
+			clockDiv.appendChild(form);
+			
+			drawWindow.appendChild(clockDiv);
+
+			watches_count++;
 			if (watches_count == 5) {
 				add_watch_btn.style.display = "none";
 			}
 		}
+
 	</script>
 </body>
 </html>

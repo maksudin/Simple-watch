@@ -12,16 +12,8 @@ body {
 	margin: -150px 0 0 -400px;
 }
 
-
-
-#sytem_clock {
-	height: 350px;
-	margin-right: 20px;
-}
-
-#system_clock > p {
+#system_clock > span {
 	position: absolute;
-	width: 200px;
 	margin-left: 25px;
 	font-family: Helvetica;
 	font-weight: bold;
@@ -41,7 +33,7 @@ body {
 #add_watch {
 	position: relative;
 	float: right;
-	top: 35%;
+	top: 30%;
 	width: 100px;
 	height: 40px;
 	margin-top: -30px;
@@ -58,10 +50,21 @@ body {
 	position: absolute;
 	width: 150px;
 	height: 150px;
+	pointer-events: none;
+}
+
+.noselect {
+	-webkit-touch-callout: none;	/* iOS Safari */
+    -webkit-user-select: none;		/* Safari */
+     -khtml-user-select: none;		/* Konqueror HTML */
+       -moz-user-select: none;		/* Firefox */
+        -ms-user-select: none;		/* Internet Explorer/Edge */
+            user-select: none;		/* Non-prefixed version, currently
+            pointer-events: none;                      supported by Chrome and Opera */
 }
 
 .new_Clock {
-	position: relative;
+	/*position: relative;*/
 	width: 300px;
 	height: 300px;
 	float: right;
@@ -70,4 +73,9 @@ body {
 .view {
 	width: 400px;
 	height: 350px;
+}
+
+.timezone_form {
+	position: absolute;
+	top: 180px;
 }
