@@ -7,9 +7,17 @@
 </head>
 <body>
 	<div id="draw_window">
-		<img class="clock" id="clock_hour" src="images/clock_hour.png" alt="clock_hour" width="300" height="300">
-		<img class="clock" id="clock_sec" src="images/clock_sec.png" alt="clock_hour" width="300" height="300">
-		<img class="clock" id="clock_min" src="images/clock_min.png" alt="clock_hour" width="300" height="300">
+		<div id="system_clock">
+			<img class="clock" id="clock_hour" src="images/clock_hour.png" alt="clock_hour">
+			<img class="clock" id="clock_sec" src="images/clock_sec.png" alt="clock_hour">
+			<img class="clock" id="clock_min" src="images/clock_min.png" alt="clock_hour">
+			<p>System time</p>
+		</div>
+
+		<div id="add_watch">
+			<p id="plus_text">Add new watch</p>
+			<img id="plus_icon" src="images/plus_icon.png" onclick="addWatch()"> 
+		</div>
 	</div>
 
 	<script type="text/javascript">
@@ -17,6 +25,10 @@
 		var clock_sec = document.getElementById("clock_sec");
 		var clock_min = document.getElementById("clock_min");
 		var clock_hour = document.getElementById("clock_hour");
+		var drawWindow = document.getElementById("draw_window");
+		var add_watch_btn = document.getElementById("add_watch");
+
+		var watches_count = 1;
 
 		var prev_min;
 		var prev_hour;
@@ -49,6 +61,30 @@
 				clock_hour.style.transform = "rotate(" + cur_hours * (30 + (cur_mins/60)) + "deg)";
 				clock_hour.style.transition = "transform 0.01s";
 				prev_hour = cur_hours;
+			}
+		}
+
+		function addWatch() {
+			var drawWindowWidth = drawWindow.offsetWidth;
+			console.log(drawWindowWidth);
+			draw_window.style.width = drawWindowWidth + 250 +"px";
+			var clockDiv = document.createElement('div');
+			draw_window.style.margin = "-150px 0 0 -" + drawWindow.offsetWidth / 2 + "px";
+
+			clockDiv.className = 'new_Clock';
+			clockDiv.style.float = 'right';
+			clockDiv.style.position = 'relative';
+
+			var clockImg = document.createElement('img');
+			clockImg.className = 'clock';
+			clockImg.src = "images/clock_hour.png";
+
+			clockDiv.appendChild(clockImg);
+			drawWindow.appendChild(clockDiv);
+			watches_count++;
+
+			if (watches_count == 5) {
+				add_watch_btn.style.display = "none";
 			}
 		}
 	</script>

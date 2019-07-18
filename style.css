@@ -7,33 +7,64 @@ body {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 300px;
+	width: 500px;
 	height: 300px;
-	/*border: 2px solid black;*/
-	margin: -150px 0 0 -150px;
+	margin: -150px 0 0 -400px;
 }
 
+
+
+#sytem_clock {
+	height: 350px;
+	margin-right: 20px;
+}
+
+#system_clock > p {
+	position: absolute;
+	width: 200px;
+	margin-left: 25px;
+	font-family: Helvetica;
+	font-weight: bold;
+	font-size: 1.05em;
+	top: 200px;
+}
+
+#plus_text {
+	position: absolute;
+	margin-left: -32px;
+	margin-top: -30px;
+	font-weight: bold;
+	font-family: Helvetica;
+	font-size: 1.05em;
+}
+
+#add_watch {
+	position: relative;
+	float: right;
+	top: 35%;
+	width: 100px;
+	height: 40px;
+	margin-top: -30px;
+}
+
+#plus_icon {
+	width: 55px;
+	height: 50px;
+	cursor: pointer;
+}
 
 .clock {
+	float: left;
 	position: absolute;
-	top: 50%;
-	left: 50%;
+	width: 150px;
+	height: 150px;
+}
+
+.new_Clock {
+	position: relative;
 	width: 300px;
 	height: 300px;
-	margin: -150px 0 0 -150px;
-}
-
-#clock_hour {
-	transform: rotate(360deg);
-}
-
-#clock_sec {
-	/*transform: rotate(180deg);*/
-}
-
-#clock_sec:active {
-	transform: rotate(6deg);
-	transition: transform 1s;
+	float: right;
 }
 
 .view {
