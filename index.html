@@ -21,6 +21,12 @@
 	</div>
 
 	<script type="text/javascript">
+		// GET запрос к API если array empty, то добавление часов disabled;
+
+		var timezoneArr;
+
+		makeRequest();
+
 		var interval = 0;
 		var clock_sec = document.getElementById("clock_sec");
 		var clock_min = document.getElementById("clock_min");
@@ -50,15 +56,14 @@
 			}
 
 			if (cur_mins != prev_min || cur_mins != 0 || cur_mins != 60) {
-
 				clock_min.style.transform = "rotate(" + cur_mins * 6 + "deg)";
-				clock_min.style.transition = "transform 0.01s";
+				clock_min.style.transition = "transform 0.5s";
 				prev_min = cur_mins;
 			}
 
 			if (cur_hours != prev_hour || cur_hours != 0 || cur_hours != 60) {
 				clock_hour.style.transform = "rotate(" + cur_hours * (30 + (cur_mins/60)) + "deg)";
-				clock_hour.style.transition = "transform 0.01s";
+				clock_hour.style.transition = "transform 1s";
 				prev_hour = cur_hours;
 			}
 		}
@@ -86,12 +91,19 @@
 			inputList.name = "timezone";
 
 			var dataList = document.createElement("dataList");
-			dataList.addId = "timezones";
-
-			dataList.innerHTML = "<option value='Finland' />" +
-			"<option value='Moscow' />";
+			dataList.id = "timezones";
 
 			inputList.setAttribute('list', dataList.id);
+
+			var options = '';
+			for (i = 0; i < timezoneArr.length; i++) {
+					options += '<option value=' + timezoneArr[i] + '/>';
+			}
+
+			console.log(timezoneArr.length);
+
+			dataList.innerHTML = options;
+
 
 			form.appendChild(inputList);
 			form.appendChild(dataList);
@@ -105,6 +117,27 @@
 			if (watches_count == 5) {
 				add_watch_btn.style.display = "none";
 			}
+		}
+
+
+		function makeRequest() {
+			var xmlhttp = new XMLHttpRequest();
+			var url = "http://worldtimeapi.org/api/timezone";
+
+			var jsonArray = xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var arr = JSON.parse(this.responseText);
+					setTimezones(arr);
+				}
+			}
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+
+			return jsonArray;
+		}
+
+		function setTimezones(zones) {
+			timezoneArr = zones;
 		}
 
 	</script>
