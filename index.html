@@ -8,132 +8,281 @@
 <body>
 	<div id="draw_window">
 		<div id="system_clock">
-			<img class="clock" id="clock_hour" src="images/clock_hour.png" alt="clock_hour">
-			<img class="clock" id="clock_sec" src="images/clock_sec.png" alt="clock_hour">
-			<img class="clock" id="clock_min" src="images/clock_min.png" alt="clock_hour">
+			<img class="clock" id="clock_hour" src="images/clock_hour.png" alt="clock_hours">
+			<img class="clock" id="clock_sec" src="images/clock_sec.png" alt="clock_minutes">
+			<img class="clock" id="clock_min" src="images/clock_min.png" alt="clock_seconds">
 			<span>System time</span>
 		</div>
 
 		<div id="add_watch">
 			<p id="plus_text">Add new watch</p>
 			<img id="plus_icon" src="images/plus_icon.png" onclick="addWatch()"> 
+			<span id="select_timezone_text">Select timezone</span>
 		</div>
 	</div>
 
 	<script type="text/javascript">
-		// GET запрос к API если array empty, то добавление часов disabled;
+		let timezoneArr;
+		let selTime;
 
-		var timezoneArr;
+		getTimeZones();
 
-		makeRequest();
+		let interval = 0;
 
-		var interval = 0;
-		var clock_sec = document.getElementById("clock_sec");
-		var clock_min = document.getElementById("clock_min");
-		var clock_hour = document.getElementById("clock_hour");
-		var drawWindow = document.getElementById("draw_window");
-		var add_watch_btn = document.getElementById("add_watch");
+		let currentWatchesElements = [];
+		currentWatchesElements.push({
+			hour_el: "clock_hour",
+			min_el: "clock_min",
+			sec_el: "clock_sec"
+		});
 
-		var watches_count = 1;
+		let drawWindow = document.getElementById("draw_window");
+		let add_watch_btn = document.getElementById("add_watch");
 
-		var prev_min;
-		var prev_hour;
+		let plus_text = document.getElementById("plus_text");
+		let plus_icon = document.getElementById("plus_icon");
+		let select_timezone_text = document.getElementById("select_timezone_text");
+		select_timezone_text.style.visibility = "hidden";
 
+		let currentWatchesTime = [];
+		let cur_secs = new Date().getSeconds();
+		let cur_mins = new Date().getMinutes();
+		let cur_hours = new Date().getHours();
+		currentWatchesTime.push({hour: cur_hours, min: cur_mins, sec: cur_secs});
+
+		let watches_count = 1;
+
+		setArrowsStartPosition();
 		startLoop();
+
+		function setArrowsStartPosition() {
+			for (let i = 0; i <= currentWatchesElements.length - 1; i++) {
+
+				console.log(currentWatchesElements);
+				console.log(currentWatchesTime);
+
+				let s_el = document.getElementById(currentWatchesElements[i].sec_el);
+				let m_el = document.getElementById(currentWatchesElements[i].min_el);
+				let h_el = document.getElementById(currentWatchesElements[i].hour_el);
+
+				s_el.style.transform = "rotate(" + currentWatchesTime[i].sec * 6 + "deg";
+				s_el.style.transition = "transform 0.1s";
+
+				m_el.style.transform = "rotate(" + currentWatchesTime[i].min * 6 + "deg";
+				m_el.style.transition = "transform 0.5s";
+
+
+				console.log(getTwelveHourFormat(currentWatchesTime[i].hour));
+
+				if (currentWatchesTime[i].hour > 12) {
+					h_el.style.transform = "rotate(" + getTwelveHourFormat(currentWatchesTime[i].hour) * 30 + "deg";
+				} else {
+					h_el.style.transform = "rotate(" + currentWatchesTime[i].hour * 30 + "deg";
+				}
+				h_el.style.transition = "transform 1s";
+			}
+		}
+
 		function startLoop() {
 			if (interval > 0) clearInterval(interval);
 			interval = setInterval("nextArrowsPosition()", 1000);
 		}
 
-		function nextArrowsPosition() {
-			var cur_secs = new Date().getSeconds();
-			var cur_mins = new Date().getMinutes();
-			var cur_hours = new Date().getHours();
+		function getTwelveHourFormat(number) {
+			switch (number) {
+				case 13:
+				return 1;
+				break;
 
-			if (cur_secs != 0 || cur_secs != 60) {
-				clock_sec.style.transform = "rotate(" + cur_secs * 6 + "deg)";
-				clock_sec.style.transition = "transform 0.01s";
-			}
+				case 14:
+				return 2;
+				break;
 
-			if (cur_mins != prev_min || cur_mins != 0 || cur_mins != 60) {
-				clock_min.style.transform = "rotate(" + cur_mins * 6 + "deg)";
-				clock_min.style.transition = "transform 0.5s";
-				prev_min = cur_mins;
-			}
+				case 15:
+				return 3;
+				break;
 
-			if (cur_hours != prev_hour || cur_hours != 0 || cur_hours != 60) {
-				clock_hour.style.transform = "rotate(" + cur_hours * (30 + (cur_mins/60)) + "deg)";
-				clock_hour.style.transition = "transform 1s";
-				prev_hour = cur_hours;
+				case 16:
+				return 4;
+				break;
+
+				case 17:
+				return 5;
+				break;
+
+				case 18:
+				return 6;
+				break;
+
+				case 19:
+				return 7;
+				break;
+
+				case 20:
+				return 8;
+				break;
+
+				case 21:
+				return 9;
+				break;
+
+				case 22:
+				return 10;
+				break;
+
+				case 23:
+				return 11;
+				break;
+
+				case 24:
+				return 12;
+				break;
 			}
 		}
 
+		function nextArrowsPosition() {
+
+			for (var i = 0; i <= currentWatchesTime.length - 1; i++) {
+
+				let seconds_element = document.getElementById(currentWatchesElements[i].sec_el);
+				let minutes_element = document.getElementById(currentWatchesElements[i].min_el);
+				let hours_element = document.getElementById(currentWatchesElements[i].hour_el);
+
+				seconds_element.style.transform = "rotate(" + currentWatchesTime[i].sec * 6 + "deg";
+				minutes_element.style.transform = "rotate(" + currentWatchesTime[i].min * 6 + "deg";
+
+				seconds_element.style.transition = "transform 0.01s";
+				minutes_element.style.transition = "transform 0.01s";
+
+				if (currentWatchesTime[i].hour > 12) {
+					hours_element.style.transform = "rotate(" + getTwelveHourFormat(currentWatchesTime[i].hour) * 30 + "deg";
+				} else {
+					hours_element.style.transform = "rotate(" + currentWatchesTime[i].hour * 30 + "deg";
+				}
+				hours_element.style.transition = "transform 0.01s";
+
+
+
+				if (currentWatchesTime[i].sec == 60) {
+					currentWatchesTime[i].sec = 1;
+					currentWatchesTime[i].min +=1;
+				}
+
+				if (currentWatchesTime[i].hour == 60) {
+					currentWatchesTime[i].min = 1;
+					currentWatchesTime[i].hour +=1;
+				}
+
+				currentWatchesTime[i].sec += 1;
+			}
+
+		}
+
 		function addWatch() {
-			var drawWindowWidth = drawWindow.offsetWidth;
+			watches_count++;
+			let drawWindowWidth = drawWindow.offsetWidth;
 			draw_window.style.width = drawWindowWidth + 250 +"px";
 			draw_window.style.margin = "-150px 0 0 -" + drawWindow.offsetWidth / 2 + "px";
 
-			var clockDiv = document.createElement('div');
+			let clockDiv = document.createElement('div');
 			clockDiv.className = 'new_Clock';
 			clockDiv.style.float = 'right';
 			clockDiv.style.position = 'relative';
+			clockDiv.addClass = "noselect";
 
-			var clockImg = document.createElement('img');
-			clockImg.className = 'clock';
-			clockImg.addClass = "noselect";
-			clockImg.src = "images/clock_hour.png";
+			let clockHourImg = document.createElement('img');
+			clockHourImg.className = 'clock';
+			clockHourImg.id = 'clock_hour' + watches_count;
+			clockHourImg.src = "images/clock_hour.png";
 
-			var form = document.createElement('form');
+			let clockMinImg = document.createElement('img');
+			clockMinImg.className = 'clock';
+			clockMinImg.id = 'clock_min' + watches_count;
+			clockMinImg.src = "images/clock_min.png";
+
+			let clockSecImg = document.createElement('img');
+			clockSecImg.className = 'clock';
+			clockSecImg.id = 'clock_sec' + watches_count;
+			clockSecImg.src = "images/clock_sec.png";
+
+			let form = document.createElement('select');
 			form.className = "timezone_form";
-			form.action = "#";
-			
-			var inputList = document.createElement("input");
-			inputList.name = "timezone";
+			form.style.width = "150px";
 
-			var dataList = document.createElement("dataList");
-			dataList.id = "timezones";
-
-			inputList.setAttribute('list', dataList.id);
-
-			var options = '';
+			let options = '';
+			options += '<option value="Not selected">Not selected</option>';
 			for (i = 0; i < timezoneArr.length; i++) {
-					options += '<option value=' + timezoneArr[i] + '/>';
+				options += '<option value=' + timezoneArr[i] + '>' + timezoneArr[i] + '</option>';
 			}
 
-			console.log(timezoneArr.length);
+			form.innerHTML = options;
+			form.setAttribute("onchange", "getSelectedTime(this.value)");
 
-			dataList.innerHTML = options;
+			currentWatchesElements.push({
+				hour_el: clockHourImg.id + "",
+				min_el: clockMinImg.id + "",
+				sec_el: clockSecImg.id + ""})
 
+			console.log(currentWatchesElements);
 
-			form.appendChild(inputList);
-			form.appendChild(dataList);
-
-			clockDiv.appendChild(clockImg);
+			clockDiv.appendChild(clockHourImg);
+			clockDiv.appendChild(clockMinImg);
+			clockDiv.appendChild(clockSecImg);
 			clockDiv.appendChild(form);
-			
+
 			drawWindow.appendChild(clockDiv);
 
-			watches_count++;
+			plus_text.style.visibility = "hidden";
+			plus_icon.style.visibility = "hidden";
+			select_timezone_text.style.visibility = "visible";
+
 			if (watches_count == 5) {
 				add_watch_btn.style.display = "none";
 			}
 		}
 
+		function addSelTimeToCurretWatches(time) {
+			let h = time.substr(11, 2);
+			let m = time.substr(14, 2);
+			let s = time.substr(17, 2);
+			currentWatchesTime.push({hour: parseInt(h, 10), min: parseInt(m, 10), sec: parseInt(s, 10)})
+			setArrowsStartPosition();
 
-		function makeRequest() {
-			var xmlhttp = new XMLHttpRequest();
-			var url = "http://worldtimeapi.org/api/timezone";
+			plus_text.style.visibility = "visible";
+			plus_icon.style.visibility = "visible";
+			select_timezone_text.style.visibility = "hidden";
+		}
 
-			var jsonArray = xmlhttp.onreadystatechange = function() {
+		function getSelectedTime(selZone) {
+			let xmlhttp = new XMLHttpRequest();
+			let url = "http://worldtimeapi.org/api/timezone/" + selZone;
+
+			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
-					var arr = JSON.parse(this.responseText);
+					let obj = JSON.parse(this.responseText);
+					addSelTimeToCurretWatches(obj.datetime);
+				}
+			}
+			xmlhttp.open("GET", url, true);
+			xmlhttp.send();
+		}
+
+		function getTimeZones() {
+			let xmlhttp = new XMLHttpRequest();
+			let url = "http://worldtimeapi.org/api/timezone";
+
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					let arr = JSON.parse(this.responseText);
 					setTimezones(arr);
 				}
 			}
 			xmlhttp.open("GET", url, true);
 			xmlhttp.send();
+		}
 
-			return jsonArray;
+		function setTime(time) {
+			selTime = time;
 		}
 
 		function setTimezones(zones) {

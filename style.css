@@ -10,6 +10,7 @@ body {
 	width: 500px;
 	height: 300px;
 	margin: -150px 0 0 -400px;
+	transition: width 0.5s;
 }
 
 #system_clock > span {
@@ -37,6 +38,15 @@ body {
 	width: 100px;
 	height: 40px;
 	margin-top: -30px;
+}
+
+#add_watch > span {
+	position: absolute;
+	margin-left: -32px;
+	margin-top: 80px;
+	font-weight: bold;
+	font-family: Helvetica;
+	font-size: 1.05em;
 }
 
 #plus_icon {
