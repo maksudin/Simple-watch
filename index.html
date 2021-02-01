@@ -263,7 +263,7 @@
 
 		function getSelectedTime(selZone) {
 			let xmlhttp = new XMLHttpRequest();
-			let url = "http://worldtimeapi.org/api/timezone/" + selZone;
+			let url = "https://worldtimeapi.org/api/timezone/" + selZone;
 
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
@@ -280,7 +280,7 @@
 
 		function getTimeZones() {
 			let xmlhttp = new XMLHttpRequest();
-			let url = "http://worldtimeapi.org/api/timezone";
+			let url = "https://worldtimeapi.org/api/timezone";
 
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
