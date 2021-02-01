@@ -55,6 +55,15 @@ body {
 	cursor: pointer;
 }
 
+#no_connect {
+	visibility: hidden;
+}
+
+.showText {
+	visibility: visible;
+}
+
+
 .clock {
 	float: left;
 	position: absolute;
@@ -89,3 +98,5 @@ body {
 	position: absolute;
 	top: 180px;
 }
+
+

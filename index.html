@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+	<span id="no_connect">No internet connection</span>
 	<div id="draw_window">
 		<div id="system_clock">
 			<img class="clock" id="clock_hour" src="images/clock_hour.png" alt="clock_hours">
@@ -25,38 +26,39 @@
 		let timezoneArr;
 		let selTime;
 
-		getTimeZones();
-
+		
 		let interval = 0;
-
+		
 		let currentWatchesElements = [];
 		currentWatchesElements.push({
 			hour_el: "clock_hour",
 			min_el: "clock_min",
 			sec_el: "clock_sec"
 		});
-
+		
+		let noConnection = document.getElementById("no_connect");
 		let drawWindow = document.getElementById("draw_window");
 		let add_watch_btn = document.getElementById("add_watch");
-
+		
 		let plus_text = document.getElementById("plus_text");
 		let plus_icon = document.getElementById("plus_icon");
 		let select_timezone_text = document.getElementById("select_timezone_text");
 		select_timezone_text.style.visibility = "hidden";
-
+		
 		let currentWatchesTime = [];
 		let cur_secs = new Date().getSeconds();
 		let cur_mins = new Date().getMinutes();
 		let cur_hours = new Date().getHours();
 		currentWatchesTime.push({hour: cur_hours, min: cur_mins, sec: cur_secs});
-
+		
 		let watches_count = 1;
-
+		
+		getTimeZones();
 		setArrowsStartPosition();
 		startLoop();
 
 		function setArrowsStartPosition() {
-			for (let i = 0; i <= currentWatchesElements.length - 1; i++) {
+			let i = watches_count - 1;
 
 				console.log(currentWatchesElements);
 				console.log(currentWatchesTime);
@@ -80,7 +82,7 @@
 					h_el.style.transform = "rotate(" + currentWatchesTime[i].hour * 30 + "deg";
 				}
 				h_el.style.transition = "transform 1s";
-			}
+			
 		}
 
 		function startLoop() {
@@ -148,7 +150,13 @@
 				let minutes_element = document.getElementById(currentWatchesElements[i].min_el);
 				let hours_element = document.getElementById(currentWatchesElements[i].hour_el);
 
-				seconds_element.style.transform = "rotate(" + currentWatchesTime[i].sec * 6 + "deg";
+				if (currentWatchesTime[i].sec != 0)
+				{
+					seconds_element.style.transform = "rotate(" + currentWatchesTime[i].sec * 6 + "deg";
+				} else {
+					seconds_element.style.transform = "rotate(" + 1 * 6 + "deg";
+				}
+
 				minutes_element.style.transform = "rotate(" + currentWatchesTime[i].min * 6 + "deg";
 
 				seconds_element.style.transition = "transform 0.01s";
@@ -164,12 +172,12 @@
 
 
 				if (currentWatchesTime[i].sec == 60) {
-					currentWatchesTime[i].sec = 1;
+					currentWatchesTime[i].sec = 0;
 					currentWatchesTime[i].min +=1;
 				}
 
 				if (currentWatchesTime[i].hour == 60) {
-					currentWatchesTime[i].min = 1;
+					currentWatchesTime[i].min = 0;
 					currentWatchesTime[i].hour +=1;
 				}
 
@@ -236,7 +244,7 @@
 			plus_icon.style.visibility = "hidden";
 			select_timezone_text.style.visibility = "visible";
 
-			if (watches_count == 5) {
+			if (watches_count == 3) {
 				add_watch_btn.style.display = "none";
 			}
 		}
@@ -259,8 +267,11 @@
 
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
+					noConnection.style.visibility = "hidden";
 					let obj = JSON.parse(this.responseText);
 					addSelTimeToCurretWatches(obj.datetime);
+				} else {
+					noConnection.style.visibility = "visible";
 				}
 			}
 			xmlhttp.open("GET", url, true);
@@ -273,8 +284,12 @@
 
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
+					noConnection.style.visibility = "hidden";
 					let arr = JSON.parse(this.responseText);
 					setTimezones(arr);
+				} else {
+					noConnection.style.visibility = "visible";
+					console.log("ConnectionError")
 				}
 			}
 			xmlhttp.open("GET", url, true);
