@@ -69,51 +69,28 @@ function getTwelveHourFormat(number) {
     switch (number) {
         case 13:
             return 1;
-            break;
-
         case 14:
             return 2;
-            break;
-
         case 15:
             return 3;
-            break;
-
         case 16:
             return 4;
-            break;
-
         case 17:
             return 5;
-            break;
-
         case 18:
             return 6;
-            break;
-
         case 19:
             return 7;
-            break;
-
         case 20:
             return 8;
-            break;
-
         case 21:
             return 9;
-            break;
-
         case 22:
             return 10;
-            break;
-
         case 23:
             return 11;
-            break;
-
         case 24:
             return 12;
-            break;
     }
 }
 
@@ -133,7 +110,7 @@ function nextArrowsPosition() {
 
         minutes_element.style.transform = "rotate(" + currentWatchesTime[i].min * 6 + "deg";
 
-        seconds_element.style.transition = "transform 0.01s";
+        seconds_element.style.transition = "transform 0.005s";
         minutes_element.style.transition = "transform 0.01s";
 
         if (currentWatchesTime[i].hour > 12) {
@@ -238,7 +215,7 @@ function addSelTimeToCurretWatches(time) {
 
 function getSelectedTime(selZone) {
     let xmlhttp = new XMLHttpRequest();
-    let url = "http://worldtimeapi.org/api/timezone/" + selZone;
+    let url = "https://worldtimeapi.org/api/timezone/" + selZone;
 
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
@@ -255,7 +232,7 @@ function getSelectedTime(selZone) {
 
 function getTimeZones() {
     let xmlhttp = new XMLHttpRequest();
-    let url = "http://worldtimeapi.org/api/timezone";
+    let url = "https://worldtimeapi.org/api/timezone";
 
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
