@@ -35,9 +35,6 @@ startLoop();
 function setArrowsStartPosition() {
     let i = watches_count - 1;
 
-    console.log(currentWatchesElements);
-    console.log(currentWatchesTime);
-
     let s_el = document.getElementById(currentWatchesElements[i].sec_el);
     let m_el = document.getElementById(currentWatchesElements[i].min_el);
     let h_el = document.getElementById(currentWatchesElements[i].hour_el);
@@ -48,8 +45,6 @@ function setArrowsStartPosition() {
     m_el.style.transform = "rotate(" + currentWatchesTime[i].min * 6 + "deg";
     m_el.style.transition = "transform 0.5s";
 
-
-    console.log(getTwelveHourFormat(currentWatchesTime[i].hour));
 
     if (currentWatchesTime[i].hour > 12) {
         h_el.style.transform = "rotate(" + getTwelveHourFormat(currentWatchesTime[i].hour) * 30 + "deg";
@@ -183,8 +178,6 @@ function addWatch() {
         sec_el: clockSecImg.id + ""
     })
 
-    console.log(currentWatchesElements);
-
     clockDiv.appendChild(clockHourImg);
     clockDiv.appendChild(clockMinImg);
     clockDiv.appendChild(clockSecImg);
@@ -241,7 +234,6 @@ function getTimeZones() {
             setTimezones(arr);
         } else {
             noConnection.style.visibility = "visible";
-            console.log("ConnectionError")
         }
     }
     xmlhttp.open("GET", url, true);
